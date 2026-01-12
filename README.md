@@ -165,10 +165,10 @@ Bu proje açık kaynaklıdır ve MIT lisansı altında lisanslanmıştır.
 
 ## 👤 Yazar
 
-**Şekercioğlu**
+**Burak Şekercioğlu**
 
-- Website: [www.sekercioglu.eu](https://www.sekercioglu.eu)
-- GitHub: [@kullaniciadi](https://github.com/bsekercioglu)
+- Website: [www.sekercioglu.eu/netflix](https://www.sekercioglu.eu/netflix)
+- GitHub: [@bsekercioglu](https://github.com/bsekercioglu)
 
 ## 🙏 Teşekkürler
 
