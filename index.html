@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Kategori Arama</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #0f0f0f 50%, #1a1a1a 75%, #0a0a0a 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: #e5e5e5;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(229, 9, 20, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(244, 6, 18, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            background: linear-gradient(135deg, #e50914 0%, #f40612 50%, #ff1744 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #e50914, transparent);
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            color: #b3b3b3;
+            font-size: 1.15rem;
+            font-weight: 300;
+            margin-top: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .search-container {
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-box::before {
+            content: '🔎';
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+            z-index: 2;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        #searchInput {
+            flex: 1;
+            padding: 16px 20px 16px 50px;
+            background: rgba(30, 30, 30, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #e5e5e5;
+            font-size: 1rem;
+            font-weight: 400;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Inter', sans-serif;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #e50914;
+            background: rgba(30, 30, 30, 1);
+            box-shadow: 0 0 0 4px rgba(229, 9, 20, 0.1);
+            transform: translateY(-2px);
+        }
+
+        #searchInput::placeholder {
+            color: #6b6b6b;
+            font-weight: 400;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            background: rgba(30, 30, 30, 0.6);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #e5e5e5;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .filter-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(229, 9, 20, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(229, 9, 20, 0.15);
+            border-color: rgba(229, 9, 20, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+        }
+
+        .filter-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #e50914, #f40612);
+            border-color: #e50914;
+            color: white;
+            box-shadow: 0 4px 16px rgba(229, 9, 20, 0.4);
+        }
+
+        .filter-btn.active::before {
+            width: 0;
+            height: 0;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            padding: 18px 24px;
+            border-radius: 12px;
+            border-left: 3px solid transparent;
+            border-image: linear-gradient(135deg, #e50914, #f40612) 1;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(229, 9, 20, 0.2);
+            background: rgba(30, 30, 30, 0.8);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #9b9b9b;
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #e50914, #f40612);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 28px;
+            margin-top: 40px;
+        }
+
+        .category-card {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #e50914, #f40612, #ff1744);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(229, 9, 20, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(229, 9, 20, 0.4);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(229, 9, 20, 0.2),
+                0 0 40px rgba(229, 9, 20, 0.1);
+            background: rgba(25, 25, 25, 0.85);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-card:hover::after {
+            opacity: 1;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: capitalize;
+            letter-spacing: -0.5px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.3;
+        }
+
+        .category-code {
+            background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(244, 6, 18, 0.2));
+            color: #ff4757;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            font-family: 'Inter', monospace;
+            border: 1px solid rgba(229, 9, 20, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subcategories {
+            margin-top: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-card.expanded .subcategories {
+            max-height: 2000px;
+        }
+
+        .subcategory-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            margin: 10px 0;
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .subcategory-item:hover {
+            background: rgba(229, 9, 20, 0.15);
+            border-color: rgba(229, 9, 20, 0.3);
+            transform: translateX(8px);
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+        }
+
+        .subcategory-name {
+            color: #e5e5e5;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-transform: capitalize;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .subcategory-code {
+            color: #9b9b9b;
+            font-size: 0.85rem;
+            font-weight: 600;
+            font-family: 'Inter', 'Courier New', monospace;
+            letter-spacing: 0.5px;
+        }
+
+        .toggle-icon {
+            color: #e50914;
+            font-size: 1.3rem;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(229, 9, 20, 0.1);
+        }
+
+        .toggle-icon:hover {
+            background: rgba(229, 9, 20, 0.2);
+            transform: scale(1.1);
+        }
+
+        .category-card.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            color: #9b9b9b;
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        .no-results-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            opacity: 0.6;
+            filter: grayscale(0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: #9b9b9b;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .copy-btn {
+            background: rgba(229, 9, 20, 0.15);
+            border: 1px solid rgba(229, 9, 20, 0.4);
+            color: #ff4757;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #e50914, #f40612);
+            border-color: #e50914;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            border-color: #4caf50;
+            color: white;
+        }
+
+        .netflix-btn {
+            background: linear-gradient(135deg, #e50914 0%, #f40612 50%, #ff1744 100%);
+            border: none;
+            color: white;
+            padding: 14px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(229, 9, 20, 0.3);
+        }
+
+        .netflix-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .netflix-btn:hover {
+            background: linear-gradient(135deg, #f40612 0%, #ff1744 50%, #e50914 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(229, 9, 20, 0.5);
+        }
+
+        .netflix-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .netflix-btn-small {
+            background: linear-gradient(135deg, #e50914, #f40612);
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 2px 8px rgba(229, 9, 20, 0.3);
+        }
+
+        .netflix-btn-small:hover {
+            background: linear-gradient(135deg, #f40612, #ff1744);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
+        }
+
+        .category-code {
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-code:hover {
+            background: linear-gradient(135deg, rgba(229, 9, 20, 0.4), rgba(244, 6, 18, 0.4));
+            border-color: rgba(229, 9, 20, 0.6);
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.3);
+        }
+
+        footer {
+            margin-top: 60px;
+            padding: 30px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-link {
+            color: #b3b3b3;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(30, 30, 30, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-link:hover {
+            color: #e50914;
+            background: rgba(229, 9, 20, 0.1);
+            border-color: rgba(229, 9, 20, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.2);
+        }
+
+        .footer-link::before {
+            content: '🌐';
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box::before {
+                display: none;
+            }
+
+            #searchInput {
+                padding-left: 20px;
+            }
+
+            .category-card {
+                padding: 20px;
+            }
+
+            .filter-buttons {
+                gap: 8px;
+            }
+
+            .filter-btn {
+                padding: 10px 18px;
+                font-size: 0.85rem;
+            }
+
+            footer {
+                margin-top: 40px;
+                padding: 20px 15px;
+            }
+
+            .footer-link {
+                font-size: 0.85rem;
+                padding: 8px 16px;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #b3b3b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎥 Netflix Kategori Arama</h1>
+            <p class="subtitle">Tüm Netflix kategorilerini keşfedin ve arayın</p>
+        </header>
+
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Kategori veya kod ara... (örn: aksiyon, 1365, komedi)">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Tümü</button>
+                <button class="filter-btn" data-filter="main">Ana Kategoriler</button>
+                <button class="filter-btn" data-filter="sub">Alt Kategoriler</button>
+                <button class="filter-btn" data-filter="country">Ülke Bazlı</button>
+            </div>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-label">Toplam Kategori</div>
+                    <div class="stat-value" id="totalCategories">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Gösterilen</div>
+                    <div class="stat-value" id="shownCategories">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="categoriesContainer" class="categories-grid">
+            <div class="loading">Yükleniyor...</div>
+        </div>
+
+        <footer>
+            <a href="https://www.sekercioglu.eu" target="_blank" class="footer-link" rel="noopener noreferrer">
+                www.sekercioglu.eu
+            </a>
+        </footer>
+    </div>
+
+    <script>
+        let netflixData = {};
+        let allCategories = [];
+        let currentFilter = 'all';
+
+        const netflixDataJSON = {
+          "netflix_master_arsiv_2026": {
+            "aksiyon_ve_macera": {
+              "ana_kod": 1365,
+              "alt_kategoriler": {
+                "aksiyon_komedileri": 43040,
+                "aksiyon_gerilim": 43048,
+                "aksiyon_bilim_kurgu_ve_fantastik": 1568,
+                "macera": 7442,
+                "kovboy_filmleri_western": 7700,
+                "cizgi_roman_ve_super_kahramanlar": 10118,
+                "dovus_sanatlari": 8985,
+                "savas_ve_askeri_aksiyon": 2125,
+                "casusluk_ve_ajan": 10702,
+                "suc_ve_aksiyon": 9584,
+                "asya_yapimi_aksiyon": 77232,
+                "klasik_aksiyon_ve_macera": 46576,
+                "arac_kacirma_temali": 20541
+              }
+            },
+            "bilim_kurgu_ve_fantastik": {
+              "ana_kod": 1492,
+              "alt_kategoriler": {
+                "aksiyon_bilim_kurgu": 1568,
+                "uzayli_bilim_kurgusu": 3327,
+                "klasik_bilim_kurgu_ve_fantastik": 47147,
+                "kult_bilim_kurgu_ve_fantastik": 4734,
+                "fantastik_filmler": 9744,
+                "bilim_kurgu_macera": 6926,
+                "bilim_kurgu_dram": 3916,
+                "bilim_kurgu_korku": 1694,
+                "bilim_kurgu_gerilim": 11014
+              }
+            },
+            "korku_ve_gerilim": {
+              "ana_korku_kodu": 8711,
+              "ana_gerilim_kodu": 8933,
+              "alt_kategoriler": {
+                "b_tipi_korku": 8195,
+                "yaratik_ozellikli": 6895,
+                "kult_korku": 10944,
+                "derin_deniz_korku": 45028,
+                "yabanci_korku_filmleri": 8654,
+                "korku_komedisi": 89585,
+                "canavar_filmleri": 947,
+                "seri_katil_filmleri": 8646,
+                "dogaustu_korku": 42023,
+                "vampirler": 75804,
+                "kurtadamlar": 75930,
+                "zombiler": 75405,
+                "seytan_ve_ruh_hikayeleri": 6998,
+                "genclik_ciglik_filmleri": 52147,
+                "psikolojik_gerilim": 5505,
+                "suc_gerilim": 10499,
+                "gizem": 9994,
+                "gangster_filmleri": 31851
+              }
+            },
+            "komedi": {
+              "ana_kod": 6548,
+              "alt_kategoriler": {
+                "kara_mizah": 869,
+                "yabanci_komediler": 4426,
+                "gece_yarisi_komedileri": 1402,
+                "sahte_belgeseller_mockumentary": 26,
+                "politik_komediler": 2700,
+                "romantik_komediler": 5475,
+                "hiciv_yergi": 4922,
+                "durum_komedileri_sitcom": 9702,
+                "kaba_mizah_slapstick": 10256,
+                "spor_komedileri": 5286,
+                "stand_up_komediler": 11559,
+                "genclik_komedileri": 3519,
+                "anime_komedi": 9302
+              }
+            },
+            "dram": {
+              "ana_kod": 5763,
+              "alt_kategoriler": {
+                "biyografik_dramalar": 3179,
+                "klasik_dramalar": 29809,
+                "mahkeme_dramalari": 2748,
+                "suc_dramalari": 6889,
+                "kitaplardan_uyarlanan_dramalar": 4961,
+                "gercek_hayattan_uyarlanan_dramalar": 3653,
+                "lgbtq_dramalari": 500,
+                "bagimsiz_dramalar": 384,
+                "askeri_dramalar": 11,
+                "donem_filmleri": 12123,
+                "politik_dramalar": 6616,
+                "romantik_dramalar": 1255,
+                "spor_dramalari": 7243,
+                "sov_dunyasi_temali_dramalar": 5012,
+                "sosyal_konulu_dramalar": 3947,
+                "aglak_filmler_tearjerkers": 6384
+              }
+            },
+            "anime": {
+              "ana_kod": 7424,
+              "alt_kategoriler": {
+                "yetiskin_animeleri": 11881,
+                "aksiyon_animeleri": 2653,
+                "komedi_animeleri": 9302,
+                "dram_animeleri": 452,
+                "fantastik_animeler": 11146,
+                "korku_animeleri": 10695,
+                "bilim_kurgu_animeleri": 2729,
+                "anime_dizileri": 6721,
+                "anime_filmler": 3063,
+                "hayvan_masallari_anime": 5507
+              }
+            },
+            "cocuk_ve_aile": {
+              "ana_kod": 783,
+              "yas_gruplari": {
+                "0_2_yas_filmleri": 6796,
+                "2_4_yas_filmleri": 6218,
+                "5_7_yas_filmleri": 5455,
+                "8_10_yas_filmleri": 561,
+                "11_12_yas_filmleri": 6962
+              },
+              "alt_kategoriler": {
+                "disney_filmleri": 67673,
+                "egitici_cocuk_filmleri": 10659,
+                "aile_filmleri": 51056,
+                "cocuk_muzikali": 52843,
+                "cocuk_kitaplarindan_uyarlananlar": 10056,
+                "cizgi_filmler": 11177,
+                "hayvan_masallari": 5507
+              }
+            },
+            "belgeseller": {
+              "ana_kod": 6839,
+              "alt_kategoriler": {
+                "biyografik_belgeseller": 3652,
+                "suc_belgeselleri": 9875,
+                "tarih_belgeselleri": 5349,
+                "askeri_belgeseller": 4006,
+                "muzik_ve_konser_belgeselleri": 90361,
+                "politik_belgeseller": 7018,
+                "bilim_ve_doga": 2595,
+                "sosyal_ve_kulturel": 3675,
+                "spor_belgeselleri": 180,
+                "seyahat_ve_macera": 1159,
+                "ruhani_belgeseller": 2760
+              }
+            },
+            "tv_dizileri": {
+              "ana_kod": 83,
+              "alt_kategoriler": {
+                "ingiliz_dizileri": 52117,
+                "klasik_diziler": 46553,
+                "suc_dizileri": 26146,
+                "kult_diziler": 74652,
+                "yemek_ve_seyahat": 72436,
+                "kore_dizileri": 67879,
+                "askeri_diziler": 25804,
+                "mini_diziler": 4814,
+                "reality_show": 9833,
+                "bilim_ve_doga_programlari": 52780,
+                "genclik_dizileri": 60951,
+                "bilim_kurgu_ve_fantastik_diziler": 1372,
+                "aksiyon_ve_macera_dizileri": 10673,
+                "belgesel_dizileri": 10105
+              }
+            },
+            "dunya_sinemasi_ulke_bazli": {
+              "turk_filmleri": 1133133,
+              "ingiliz_filmleri": 10757,
+              "fransiz_filmleri": 58807,
+              "alman_filmleri": 58886,
+              "italyan_filmleri": 8221,
+              "ispanyol_filmleri": 58741,
+              "iskandinav_filmleri": 9292,
+              "afrika_filmleri": 3761,
+              "asya_aksiyon": 77232,
+              "bollywood_hint": 10463,
+              "latin_amerika": 1613,
+              "orta_dogu": 5875,
+              "rus_filmleri": 11567,
+              "avustralya_filmleri": 5230,
+              "belcika_filmleri": 262,
+              "cin_filmleri": 3960,
+              "hollanda_filmleri": 10606,
+              "dogu_avrupa_filmleri": 5254,
+              "yunanistan_filmleri": 61115,
+              "irlanda_filmleri": 58750,
+              "japon_filmleri": 10398,
+              "kore_filmleri": 5685,
+              "yeni_zelanda_filmleri": 63782,
+              "guneydogu_asya_filmleri": 9196
+            },
+            "muzik": {
+              "ana_kod": 1701,
+              "alt_kategoriler": {
+                "cocuk_muzikleri": 52843,
+                "country_ve_western": 1105,
+                "caz_ve_easy_listening": 10271,
+                "latin_muzik": 10741,
+                "muzikaller": 13335,
+                "rock_ve_pop_konserleri": 3278,
+                "klasik_muzikaller": 32392,
+                "disney_muzikalleri": 59433,
+                "sov_dunyasi_muzikalleri": 13573,
+                "sahne_muzikalleri": 55774,
+                "dunya_konserleri": 2856
+              }
+            },
+            "spor_filmleri": {
+              "ana_kod": 4370,
+              "alt_kategoriler": {
+                "beyzbol_filmleri": 12339,
+                "basketbol_filmleri": 12762,
+                "boks_filmleri": 12443,
+                "futbol_filmleri_amerikan": 12803,
+                "futbol_filmleri_soccer": 12549,
+                "dovus_sanati_filmleri": 8985,
+                "dovus_sanatlari_boks_gures": 6695,
+                "spor_ve_saglik": 9327,
+                "spor_belgeselleri": 180,
+                "spor_dramalari": 7243
+              }
+            },
+            "ozel_ilgi_alanlari": {
+              "klasik_filmler": {
+                "ana_kod": 31574,
+                "alt": {
+                  "sessiz_filmler": 53310,
+                  "kara_film_noir": 7687,
+                  "epik_destansi": 52858,
+                  "savas_klasikleri": 48744
+                }
+              },
+              "bagimsiz_filmler": {
+                "ana_kod": 7077,
+                "alt": {
+                  "deneysel_filmler": 11079,
+                  "bagimsiz_aksiyon": 11804,
+                  "bagimsiz_gerilim": 3269
+                }
+              },
+              "inanc_ve_maneviyat": {
+                "ana_kod": 52804,
+                "alt": {
+                  "ruhani_belgeseller": 2760,
+                  "cocuklar_icin_inanc_ve_maneviyat": 751423
+                }
+              },
+              "lgbtq_filmleri": {
+                "ana_kod": 5977,
+                "alt": {
+                  "lgbtq_komedileri": 7120,
+                  "lgbtq_dramalari": 500,
+                  "lgbtq_belgeselleri": 4720,
+                  "romantik_lgbtq_filmleri": 3329
+                }
+              },
+              "yetiskin_icerik": {
+                 "romantik_erotik_filmler": 35800,
+                 "erotik_gerilim": 972
+              }
+            },
+            "teknik_format_ve_sure": {
+              "4k_uhd_icerikler": 1159490,
+              "kisa_filmler": 1505,
+              "90_dakika_alti_filmler": 81466194
+            },
+            "mevsimsel_ve_tatil": {
+              "noel_yilbasi_filmleri_genel": 1394527,
+              "aile_dostu_yilbasi_filmleri": 1474017,
+              "romantik_yilbasi_filmleri": 1394527,
+              "yilbasi_komedileri": 1474015,
+              "korku_temali_yilbasi": 1475312
+            }
+          }
+        };
+
+        function loadData() {
+            try {
+                netflixData = netflixDataJSON;
+                processData();
+                renderCategories();
+            } catch (error) {
+                console.error('Veri yüklenirken hata oluştu:', error);
+                document.getElementById('categoriesContainer').innerHTML = 
+                    '<div class="no-results"><div class="no-results-icon">⚠</div><p>Veri yüklenirken bir hata oluştu.</p></div>';
+            }
+        }
+
+        function processData() {
+            allCategories = [];
+            const data = netflixData.netflix_master_arsiv_2026;
+
+            Object.keys(data).forEach(key => {
+                if (key === 'dunya_sinemasi_ulke_bazli' || 
+                    key === 'teknik_format_ve_sure' || 
+                    key === 'mevsimsel_ve_tatil' ||
+                    key === 'ozel_ilgi_alanlari') {
+                    return;
+                }
+
+                const category = data[key];
+                if (category && typeof category === 'object') {
+                    const mainCode = category.ana_kod || category.ana_korku_kodu || category.ana_gerilim_kodu;
+                    const subcategories = category.alt_kategoriler || category.yas_gruplari || {};
+
+                    allCategories.push({
+                        name: formatCategoryName(key),
+                        key: key,
+                        code: mainCode,
+                        subcategories: Object.entries(subcategories).map(([subKey, subCode]) => ({
+                            name: formatCategoryName(subKey),
+                            key: subKey,
+                            code: subCode
+                        })),
+                        type: 'main'
+                    });
+                }
+            });
+
+            if (data.ozel_ilgi_alanlari) {
+                Object.entries(data.ozel_ilgi_alanlari).forEach(([key, value]) => {
+                    if (value && typeof value === 'object' && value.ana_kod) {
+                        allCategories.push({
+                            name: formatCategoryName(key),
+                            key: key,
+                            code: value.ana_kod,
+                            subcategories: value.alt ? Object.entries(value.alt).map(([subKey, subCode]) => ({
+                                name: formatCategoryName(subKey),
+                                key: subKey,
+                                code: subCode
+                            })) : [],
+                            type: 'special'
+                        });
+                    } else if (typeof value === 'object') {
+                        Object.entries(value).forEach(([subKey, subCode]) => {
+                            allCategories.push({
+                                name: formatCategoryName(subKey),
+                                key: subKey,
+                                code: subCode,
+                                subcategories: [],
+                                type: 'special'
+                            });
+                        });
+                    }
+                });
+            }
+
+            if (data.dunya_sinemasi_ulke_bazli) {
+                Object.entries(data.dunya_sinemasi_ulke_bazli).forEach(([key, code]) => {
+                    allCategories.push({
+                        name: formatCategoryName(key),
+                        key: key,
+                        code: code,
+                        subcategories: [],
+                        type: 'country'
+                    });
+                });
+            }
+
+            if (data.teknik_format_ve_sure) {
+                Object.entries(data.teknik_format_ve_sure).forEach(([key, code]) => {
+                    allCategories.push({
+                        name: formatCategoryName(key),
+                        key: key,
+                        code: code,
+                        subcategories: [],
+                        type: 'technical'
+                    });
+                });
+            }
+
+            if (data.mevsimsel_ve_tatil) {
+                Object.entries(data.mevsimsel_ve_tatil).forEach(([key, code]) => {
+                    allCategories.push({
+                        name: formatCategoryName(key),
+                        key: key,
+                        code: code,
+                        subcategories: [],
+                        type: 'seasonal'
+                    });
+                });
+            }
+
+            updateStats();
+        }
+
+        function formatCategoryName(name) {
+            return name
+                .split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        function renderCategories(filteredCategories = null) {
+            const container = document.getElementById('categoriesContainer');
+            const categories = filteredCategories || allCategories;
+
+            if (categories.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <div class="no-results-icon">🔍</div>
+                        <p>Sonuç bulunamadı. Farklı bir arama terimi deneyin.</p>
+                    </div>
+                `;
+                document.getElementById('shownCategories').textContent = '0';
+                return;
+            }
+
+            container.innerHTML = categories.map(category => `
+                <div class="category-card" data-type="${category.type}">
+                    <div class="category-header">
+                        <div>
+                            <div class="category-name">${category.name}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span class="category-code" onclick="openNetflix(${category.code}, event)" title="Netflix'te Aç">${category.code}</span>
+                            ${category.subcategories.length > 0 ? 
+                                `<span class="toggle-icon">▼</span>` : ''}
+                        </div>
+                    </div>
+                    <a href="https://www.netflix.com/browse/genre/${category.code}" target="_blank" class="netflix-btn" onclick="event.stopPropagation()">
+                        <span style="font-size: 1.1rem;">▶</span> Netflix'te ${category.name} Kategorisini Aç
+                    </a>
+                    ${category.subcategories.length > 0 ? `
+                        <div class="subcategories">
+                            ${category.subcategories.map(sub => `
+                                <div class="subcategory-item">
+                                    <span class="subcategory-name">${sub.name}</span>
+                                    <div>
+                                        <span class="subcategory-code">${sub.code}</span>
+                                        <button class="copy-btn" onclick="copyCode(${sub.code}, event)" title="Kodu Kopyala">
+                                            <span style="font-size: 0.9rem;">📄</span>
+                                        </button>
+                                        <button class="netflix-btn-small" onclick="openNetflix(${sub.code}, event)" title="Netflix'te Aç">
+                                            <span style="font-size: 0.9rem;">▶</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.category-card').forEach(card => {
+                const toggleIcon = card.querySelector('.toggle-icon');
+                if (toggleIcon) {
+                    toggleIcon.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        card.classList.toggle('expanded');
+                    });
+                    
+                    card.addEventListener('click', function(e) {
+                        if (!e.target.classList.contains('copy-btn') && 
+                            !e.target.classList.contains('netflix-btn') && 
+                            !e.target.classList.contains('netflix-btn-small') &&
+                            !e.target.closest('.netflix-btn') &&
+                            !e.target.closest('.netflix-btn-small') &&
+                            !e.target.classList.contains('category-code')) {
+                            this.classList.toggle('expanded');
+                        }
+                    });
+                }
+            });
+
+            document.getElementById('shownCategories').textContent = categories.length;
+        }
+
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            let filtered = allCategories;
+
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(cat => {
+                    if (currentFilter === 'main') return cat.type === 'main';
+                    if (currentFilter === 'sub') return cat.subcategories.length > 0;
+                    if (currentFilter === 'country') return cat.type === 'country';
+                    return true;
+                });
+            }
+
+            if (searchTerm) {
+                filtered = filtered.filter(category => {
+                    if (category.name.toLowerCase().includes(searchTerm)) return true;
+                    
+                    if (category.code && category.code.toString().includes(searchTerm)) return true;
+                    
+                    const subMatch = category.subcategories.some(sub => 
+                        sub.name.toLowerCase().includes(searchTerm) || 
+                        sub.code.toString().includes(searchTerm)
+                    );
+                    
+                    return subMatch;
+                });
+
+                filtered = filtered.map(category => {
+                    const matchingSubs = category.subcategories.filter(sub =>
+                        sub.name.toLowerCase().includes(searchTerm) ||
+                        sub.code.toString().includes(searchTerm)
+                    );
+                    
+                    if (matchingSubs.length > 0 && !category.name.toLowerCase().includes(searchTerm)) {
+                        return {
+                            ...category,
+                            subcategories: matchingSubs
+                        };
+                    }
+                    return category;
+                });
+            }
+
+            renderCategories(filtered);
+        }
+
+        function openNetflix(code, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            const netflixUrl = `https://www.netflix.com/browse/genre/${code}`;
+            window.open(netflixUrl, '_blank');
+        }
+
+        function copyCode(code, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            navigator.clipboard.writeText(code.toString()).then(() => {
+                if (event && event.target) {
+                    event.target.classList.add('copied');
+                    event.target.textContent = '✓';
+                    setTimeout(() => {
+                        event.target.classList.remove('copied');
+                        event.target.textContent = '📋';
+                    }, 2000);
+                }
+            }).catch(err => {
+                console.error('Kopyalama hatası:', err);
+            });
+        }
+
+        function updateStats() {
+            document.getElementById('totalCategories').textContent = allCategories.length;
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                performSearch();
+            });
+        });
+
+        document.getElementById('searchInput').addEventListener('input', performSearch);
+
+        loadData();
+    </script>
+</body>
+</html>

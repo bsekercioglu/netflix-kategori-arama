@@ -1,0 +1,276 @@
+{
+  "netflix_master_arsiv_2026": {
+    "aksiyon_ve_macera": {
+      "ana_kod": 1365,
+      "alt_kategoriler": {
+        "aksiyon_komedileri": 43040,
+        "aksiyon_gerilim": 43048,
+        "aksiyon_bilim_kurgu_ve_fantastik": 1568,
+        "macera": 7442,
+        "kovboy_filmleri_western": 7700,
+        "cizgi_roman_ve_super_kahramanlar": 10118,
+        "dovus_sanatlari": 8985,
+        "savas_ve_askeri_aksiyon": 2125,
+        "casusluk_ve_ajan": 10702,
+        "suc_ve_aksiyon": 9584,
+        "asya_yapimi_aksiyon": 77232,
+        "klasik_aksiyon_ve_macera": 46576,
+        "arac_kacirma_temali": 20541
+      }
+    },
+    "bilim_kurgu_ve_fantastik": {
+      "ana_kod": 1492,
+      "alt_kategoriler": {
+        "aksiyon_bilim_kurgu": 1568,
+        "uzayli_bilim_kurgusu": 3327,
+        "klasik_bilim_kurgu_ve_fantastik": 47147,
+        "kult_bilim_kurgu_ve_fantastik": 4734,
+        "fantastik_filmler": 9744,
+        "bilim_kurgu_macera": 6926,
+        "bilim_kurgu_dram": 3916,
+        "bilim_kurgu_korku": 1694,
+        "bilim_kurgu_gerilim": 11014
+      }
+    },
+    "korku_ve_gerilim": {
+      "ana_korku_kodu": 8711,
+      "ana_gerilim_kodu": 8933,
+      "alt_kategoriler": {
+        "b_tipi_korku": 8195,
+        "yaratik_ozellikli": 6895,
+        "kult_korku": 10944,
+        "derin_deniz_korku": 45028,
+        "yabanci_korku_filmleri": 8654,
+        "korku_komedisi": 89585,
+        "canavar_filmleri": 947,
+        "seri_katil_filmleri": 8646,
+        "dogaustu_korku": 42023,
+        "vampirler": 75804,
+        "kurtadamlar": 75930,
+        "zombiler": 75405,
+        "seytan_ve_ruh_hikayeleri": 6998,
+        "genclik_ciglik_filmleri": 52147,
+        "psikolojik_gerilim": 5505,
+        "suc_gerilim": 10499,
+        "gizem": 9994,
+        "gangster_filmleri": 31851
+      }
+    },
+    "komedi": {
+      "ana_kod": 6548,
+      "alt_kategoriler": {
+        "kara_mizah": 869,
+        "yabanci_komediler": 4426,
+        "gece_yarisi_komedileri": 1402,
+        "sahte_belgeseller_mockumentary": 26,
+        "politik_komediler": 2700,
+        "romantik_komediler": 5475,
+        "hiciv_yergi": 4922,
+        "durum_komedileri_sitcom": 9702,
+        "kaba_mizah_slapstick": 10256,
+        "spor_komedileri": 5286,
+        "stand_up_komediler": 11559,
+        "genclik_komedileri": 3519,
+        "anime_komedi": 9302
+      }
+    },
+    "dram": {
+      "ana_kod": 5763,
+      "alt_kategoriler": {
+        "biyografik_dramalar": 3179,
+        "klasik_dramalar": 29809,
+        "mahkeme_dramalari": 2748,
+        "suc_dramalari": 6889,
+        "kitaplardan_uyarlanan_dramalar": 4961,
+        "gercek_hayattan_uyarlanan_dramalar": 3653,
+        "lgbtq_dramalari": 500,
+        "bagimsiz_dramalar": 384,
+        "askeri_dramalar": 11,
+        "donem_filmleri": 12123,
+        "politik_dramalar": 6616,
+        "romantik_dramalar": 1255,
+        "spor_dramalari": 7243,
+        "sov_dunyasi_temali_dramalar": 5012,
+        "sosyal_konulu_dramalar": 3947,
+        "aglak_filmler_tearjerkers": 6384
+      }
+    },
+    "anime": {
+      "ana_kod": 7424,
+      "alt_kategoriler": {
+        "yetiskin_animeleri": 11881,
+        "aksiyon_animeleri": 2653,
+        "komedi_animeleri": 9302,
+        "dram_animeleri": 452,
+        "fantastik_animeler": 11146,
+        "korku_animeleri": 10695,
+        "bilim_kurgu_animeleri": 2729,
+        "anime_dizileri": 6721,
+        "anime_filmler": 3063,
+        "hayvan_masallari_anime": 5507
+      }
+    },
+    "cocuk_ve_aile": {
+      "ana_kod": 783,
+      "yas_gruplari": {
+        "0_2_yas_filmleri": 6796,
+        "2_4_yas_filmleri": 6218,
+        "5_7_yas_filmleri": 5455,
+        "8_10_yas_filmleri": 561,
+        "11_12_yas_filmleri": 6962
+      },
+      "alt_kategoriler": {
+        "disney_filmleri": 67673,
+        "egitici_cocuk_filmleri": 10659,
+        "aile_filmleri": 51056,
+        "cocuk_muzikali": 52843,
+        "cocuk_kitaplarindan_uyarlananlar": 10056,
+        "cizgi_filmler": 11177,
+        "hayvan_masallari": 5507
+      }
+    },
+    "belgeseller": {
+      "ana_kod": 6839,
+      "alt_kategoriler": {
+        "biyografik_belgeseller": 3652,
+        "suc_belgeselleri": 9875,
+        "tarih_belgeselleri": 5349,
+        "askeri_belgeseller": 4006,
+        "muzik_ve_konser_belgeselleri": 90361,
+        "politik_belgeseller": 7018,
+        "bilim_ve_doga": 2595,
+        "sosyal_ve_kulturel": 3675,
+        "spor_belgeselleri": 180,
+        "seyahat_ve_macera": 1159,
+        "ruhani_belgeseller": 2760
+      }
+    },
+    "tv_dizileri": {
+      "ana_kod": 83,
+      "alt_kategoriler": {
+        "ingiliz_dizileri": 52117,
+        "klasik_diziler": 46553,
+        "suc_dizileri": 26146,
+        "kult_diziler": 74652,
+        "yemek_ve_seyahat": 72436,
+        "kore_dizileri": 67879,
+        "askeri_diziler": 25804,
+        "mini_diziler": 4814,
+        "reality_show": 9833,
+        "bilim_ve_doga_programlari": 52780,
+        "genclik_dizileri": 60951,
+        "bilim_kurgu_ve_fantastik_diziler": 1372,
+        "aksiyon_ve_macera_dizileri": 10673,
+        "belgesel_dizileri": 10105
+      }
+    },
+    "dunya_sinemasi_ulke_bazli": {
+      "turk_filmleri": 1133133,
+      "ingiliz_filmleri": 10757,
+      "fransiz_filmleri": 58807,
+      "alman_filmleri": 58886,
+      "italyan_filmleri": 8221,
+      "ispanyol_filmleri": 58741,
+      "iskandinav_filmleri": 9292,
+      "afrika_filmleri": 3761,
+      "asya_aksiyon": 77232,
+      "bollywood_hint": 10463,
+      "latin_amerika": 1613,
+      "orta_dogu": 5875,
+      "rus_filmleri": 11567,
+      "avustralya_filmleri": 5230,
+      "belcika_filmleri": 262,
+      "cin_filmleri": 3960,
+      "hollanda_filmleri": 10606,
+      "dogu_avrupa_filmleri": 5254,
+      "yunanistan_filmleri": 61115,
+      "irlanda_filmleri": 58750,
+      "japon_filmleri": 10398,
+      "kore_filmleri": 5685,
+      "yeni_zelanda_filmleri": 63782,
+      "guneydogu_asya_filmleri": 9196
+    },
+    "muzik": {
+      "ana_kod": 1701,
+      "alt_kategoriler": {
+        "cocuk_muzikleri": 52843,
+        "country_ve_western": 1105,
+        "caz_ve_easy_listening": 10271,
+        "latin_muzik": 10741,
+        "muzikaller": 13335,
+        "rock_ve_pop_konserleri": 3278,
+        "klasik_muzikaller": 32392,
+        "disney_muzikalleri": 59433,
+        "sov_dunyasi_muzikalleri": 13573,
+        "sahne_muzikalleri": 55774,
+        "dunya_konserleri": 2856
+      }
+    },
+    "spor_filmleri": {
+      "ana_kod": 4370,
+      "alt_kategoriler": {
+        "beyzbol_filmleri": 12339,
+        "basketbol_filmleri": 12762,
+        "boks_filmleri": 12443,
+        "futbol_filmleri_amerikan": 12803,
+        "futbol_filmleri_soccer": 12549,
+        "dovus_sanati_filmleri": 8985,
+        "dovus_sanatlari_boks_gures": 6695,
+        "spor_ve_saglik": 9327,
+        "spor_belgeselleri": 180,
+        "spor_dramalari": 7243
+      }
+    },
+    "ozel_ilgi_alanlari": {
+      "klasik_filmler": {
+        "ana_kod": 31574,
+        "alt": {
+          "sessiz_filmler": 53310,
+          "kara_film_noir": 7687,
+          "epik_destansi": 52858,
+          "savas_klasikleri": 48744
+        }
+      },
+      "bagimsiz_filmler": {
+        "ana_kod": 7077,
+        "alt": {
+          "deneysel_filmler": 11079,
+          "bagimsiz_aksiyon": 11804,
+          "bagimsiz_gerilim": 3269
+        }
+      },
+      "inanc_ve_maneviyat": {
+        "ana_kod": 52804,
+        "alt": {
+          "ruhani_belgeseller": 2760,
+          "cocuklar_icin_inanc_ve_maneviyat": 751423
+        }
+      },
+      "lgbtq_filmleri": {
+        "ana_kod": 5977,
+        "alt": {
+          "lgbtq_komedileri": 7120,
+          "lgbtq_dramalari": 500,
+          "lgbtq_belgeselleri": 4720,
+          "romantik_lgbtq_filmleri": 3329
+        }
+      },
+      "yetiskin_icerik": {
+         "romantik_erotik_filmler": 35800,
+         "erotik_gerilim": 972
+      }
+    },
+    "teknik_format_ve_sure": {
+      "4k_uhd_icerikler": 1159490,
+      "kisa_filmler": 1505,
+      "90_dakika_alti_filmler": 81466194
+    },
+    "mevsimsel_ve_tatil": {
+      "noel_yilbasi_filmleri_genel": 1394527,
+      "aile_dostu_yilbasi_filmleri": 1474017,
+      "romantik_yilbasi_filmleri": 1394527,
+      "yilbasi_komedileri": 1474015,
+      "korku_temali_yilbasi": 1475312
+    }
+  }
+}
