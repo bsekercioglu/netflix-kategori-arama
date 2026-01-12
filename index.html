@@ -1150,6 +1150,9 @@
 
             document.querySelectorAll('.category-card').forEach(card => {
                 const toggleIcon = card.querySelector('.toggle-icon');
+                const categoryCode = card.querySelector('.category-code');
+                const code = categoryCode ? categoryCode.textContent.trim() : null;
+                
                 if (toggleIcon) {
                     toggleIcon.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -1166,6 +1169,19 @@
                             this.classList.toggle('expanded');
                         }
                     });
+                } else {
+                    card.addEventListener('click', function(e) {
+                        if (!e.target.classList.contains('copy-btn') && 
+                            !e.target.classList.contains('netflix-btn') && 
+                            !e.target.classList.contains('netflix-btn-small') &&
+                            !e.target.closest('.netflix-btn') &&
+                            !e.target.closest('.netflix-btn-small') &&
+                            !e.target.classList.contains('category-code') &&
+                            code) {
+                            openNetflix(parseInt(code), e);
+                        }
+                    });
+                    card.style.cursor = 'pointer';
                 }
             });
 
